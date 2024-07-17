@@ -390,7 +390,8 @@ class RosInterface(Node):
                 image_data = np.frombuffer(self.image_sync.data, np.uint8)
                 self.image_sync = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
             else:
-                self.image_sync = self.bridge.imgmsg_to_cv2(self.image_sync)
+                self.image_sync = self.bridge.imgmsg_to_cv2(self.image_sync, "bgr8")
+                # self.image_sync = self.bridge.imgmsg_to_cv2(self.image_sync)
                 # image = cv2.cvtColor(self.raw_image, cv2.COLOR_BGR2RGB)
 
             self.sensor_data_callback(self.image_sync, self.camera_info_sync, points)
