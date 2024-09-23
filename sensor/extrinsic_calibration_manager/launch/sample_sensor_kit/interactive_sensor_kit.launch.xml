@@ -22,7 +22,7 @@
     <let name="camera_info_topic" value="/sensing/camera/$(var camera_name)/zed_node/rgb/camera_info"/>
     <let name="camera_info_topic" value="/sensing/camera/traffic_light/camera_info" if="$(eval &quot;'$(var camera_name)' == 'traffic_light_left_camera' &quot;)"/>
 
-    <let name="pointcloud_topic" value="/sensing/lidar/concatenated/pointcloud" if="$(eval &quot;'$(var camera_name)' == 'zedxm' &quot;)"/>
+    <let name="pointcloud_topic" value="/sensing/lidar/bf_lidar/points_raw" if="$(eval &quot;'$(var camera_name)' == 'zedxm' &quot;)"/>
     <let name="pointcloud_topic" value="/sensing/lidar/top/pointcloud_raw" if="$(eval &quot;'$(var camera_name)' == 'camera1' &quot;)"/>
     <let name="pointcloud_topic" value="/sensing/lidar/top/pointcloud_raw" if="$(eval &quot;'$(var camera_name)' == 'camera2' &quot;)"/>
     <let name="pointcloud_topic" value="/sensing/lidar/top/pointcloud_raw" if="$(eval &quot;'$(var camera_name)' == 'camera3' &quot;)"/>

@@ -4,7 +4,7 @@
   <let name="sensor_model" value="sample_sensor_kit"/>
   <arg name="camera_name" default="zedxm"/>
   <arg name="rviz" default="false"/>
-  <arg name="use_concatenated_pointcloud" default="true"/>
+  <arg name="use_concatenated_pointcloud" default="false"/>
 
   <group>
     <push-ros-namespace namespace="sensor_kit"/>
