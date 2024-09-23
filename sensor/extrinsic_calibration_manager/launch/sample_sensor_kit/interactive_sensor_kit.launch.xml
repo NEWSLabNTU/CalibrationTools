@@ -73,6 +73,11 @@
         args="-0.01 0.025 0.016 -1.5708 0 -1.5708 zedxm_camera_link zedxm_left_camera_optical_frame"/>
 
 
+    <node
+        pkg="tf2_ros"
+        exec="static_transform_publisher"
+        name="static_transform_publisher"
+        args="0 0 0 0 0 0 sensor_kit_base_link lidar"/>
 
     <!-- interactive calibrator -->
     <group if="$(var calibrate_sensor)">
