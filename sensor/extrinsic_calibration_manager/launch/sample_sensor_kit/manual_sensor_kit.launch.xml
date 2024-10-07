@@ -19,28 +19,16 @@
         <param name="parent_frame" value="$(var parent_frame)"/>
         <!-- Please Update with your own sensor frames -->
         <param name="child_frames" value="
-            [lidar,
-            zedxm_camera_link]"/>
+            [camera1/camera_link]"/>
     </node>
 
-    <node
-        pkg="tf2_ros"
-        exec="static_transform_publisher"
-        name="static_transform_publisher"
-        args="-0.01 0.025 0.016 -1.5708 0 -1.5708 zedxm_camera_link zedxm_left_camera_optical_frame"/>
 
 
     <!-- extrinsic_manual_calibrator -->
     <!-- Please create a launch for all sensors that you used. -->
     <include file="$(find-pkg-share extrinsic_manual_calibrator)/launch/calibrator.launch.xml">
-        <arg name="ns" value="$(var parent_frame)/lidar"/>
+	<arg name="ns" value="$(var parent_frame)/camera1/camera_link"/>
         <arg name="parent_frame" value="$(var parent_frame)"/>
-        <arg name="child_frame" value="lidar"/>
-    </include>
-
-    <include file="$(find-pkg-share extrinsic_manual_calibrator)/launch/calibrator.launch.xml">
-        <arg name="ns" value="$(var parent_frame)/zedxm_camera_link"/>
-        <arg name="parent_frame" value="$(var parent_frame)"/>
-        <arg name="child_frame" value="zedxm_camera_link"/>
+	<arg name="child_frame" value="camera1/camera_link"/>
     </include>
 </launch>

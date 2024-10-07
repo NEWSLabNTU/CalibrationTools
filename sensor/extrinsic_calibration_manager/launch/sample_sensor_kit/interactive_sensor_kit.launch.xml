@@ -11,7 +11,7 @@
 
     <arg name="camera_name"/>
 
-    <let name="image_topic" value="/sensing/camera/$(var camera_name)/zed_node/rgb/image_rect_color"/>
+    <let name="image_topic" value="/lucid_vision/camera_1/image"/>
     <let name="image_topic" value="/sensing/camera/traffic_light/image_raw" if="$(eval &quot;'$(var camera_name)' == 'traffic_light_left_camera' &quot;)"/>
 
     <let name="use_compressed" value="false"/>
@@ -19,10 +19,10 @@
     <let name="image_compressed_topic" value="/sensing/camera/$(var camera_name)/zed_node/rgb_raw/image_raw_color/compressed"/>
     <let name="image_compressed_topic" value="/sensing/camera/traffic_light/image_raw/compressed" if="$(eval &quot;'$(var camera_name)' == 'traffic_light_left_camera' &quot;)"/>
 
-    <let name="camera_info_topic" value="/sensing/camera/$(var camera_name)/zed_node/rgb/camera_info"/>
+    <let name="camera_info_topic" value="/lucid_vision/camera_1/camera_info"/>
     <let name="camera_info_topic" value="/sensing/camera/traffic_light/camera_info" if="$(eval &quot;'$(var camera_name)' == 'traffic_light_left_camera' &quot;)"/>
 
-    <let name="pointcloud_topic" value="/sensing/lidar/bf_lidar/points_raw" if="$(eval &quot;'$(var camera_name)' == 'zedxm' &quot;)"/>
+    <let name="pointcloud_topic" value="/sensing/lidar/concatenated/pointcloud" if="$(eval &quot;'$(var camera_name)' == 'lucid' &quot;)"/>
     <let name="pointcloud_topic" value="/sensing/lidar/top/pointcloud_raw" if="$(eval &quot;'$(var camera_name)' == 'camera1' &quot;)"/>
     <let name="pointcloud_topic" value="/sensing/lidar/top/pointcloud_raw" if="$(eval &quot;'$(var camera_name)' == 'camera2' &quot;)"/>
     <let name="pointcloud_topic" value="/sensing/lidar/top/pointcloud_raw" if="$(eval &quot;'$(var camera_name)' == 'camera3' &quot;)"/>
@@ -31,7 +31,7 @@
     <let name="pointcloud_topic" value="/sensing/lidar/top/pointcloud_raw" if="$(eval &quot;'$(var camera_name)' == 'traffic_light_left_camera' &quot;)"/>
 
     <let name="calibrate_sensor" value="false"/>
-    <let name="calibrate_sensor" value="true" if="$(eval &quot;'$(var camera_name)' == 'zedxm' &quot;)"/>
+    <let name="calibrate_sensor" value="true" if="$(eval &quot;'$(var camera_name)' == 'lucid' &quot;)"/>
     <let name="calibrate_sensor" value="true" if="$(eval &quot;'$(var camera_name)' == 'camera1' &quot;)"/>
     <let name="calibrate_sensor" value="true" if="$(eval &quot;'$(var camera_name)' == 'camera2' &quot;)"/>
     <let name="calibrate_sensor" value="true" if="$(eval &quot;'$(var camera_name)' == 'camera3' &quot;)"/>
@@ -40,8 +40,7 @@
     <let name="calibrate_sensor" value="true" if="$(eval &quot;'$(var camera_name)' == 'traffic_light_left_camera' &quot;)"/>
 
     <let name="camera_frame" value=""/>
-    <let name="camera_frame" value="zedxm_camera_link" if="$(eval &quot;'$(var camera_name)' == 'zedxm' &quot;)"/>
-    <let name="camera_frame" value="camera1/camera_link" if="$(eval &quot;'$(var camera_name)' == 'camera1' &quot;)"/>
+    <let name="camera_frame" value="camera1/camera_link" if="$(eval &quot;'$(var camera_name)' == 'lucid' &quot;)"/>
     <let name="camera_frame" value="camera2/camera_link" if="$(eval &quot;'$(var camera_name)' == 'camera2' &quot;)"/>
     <let name="camera_frame" value="camera3/camera_link" if="$(eval &quot;'$(var camera_name)' == 'camera3' &quot;)"/>
     <let name="camera_frame" value="camera4/camera_link" if="$(eval &quot;'$(var camera_name)' == 'camera4' &quot;)"/>
@@ -60,24 +59,10 @@
     </node>
 
     <include file="$(find-pkg-share extrinsic_manual_calibrator)/launch/calibrator.launch.xml">
-        <arg name="ns" value="$(var parent_frame)/zedxm_camera_link"/>
+        <arg name="ns" value="$(var parent_frame)/camera_top/camera_link"/>
         <arg name="parent_frame" value="$(var parent_frame)"/>
-        <arg name="child_frame" value="zedxm_camera_link"/>
+        <arg name="child_frame" value="camera1/camera_link"/>
     </include>
-
-
-    <node
-        pkg="tf2_ros"
-        exec="static_transform_publisher"
-        name="static_transform_publisher"
-        args="-0.01 0.025 0.016 -1.5708 0 -1.5708 zedxm_camera_link zedxm_left_camera_optical_frame"/>
-
-
-    <node
-        pkg="tf2_ros"
-        exec="static_transform_publisher"
-        name="static_transform_publisher"
-        args="0 0 0 0 0 0 sensor_kit_base_link lidar"/>
 
     <!-- interactive calibrator -->
     <group if="$(var calibrate_sensor)">

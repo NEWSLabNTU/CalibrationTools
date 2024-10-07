@@ -2,9 +2,9 @@
 <launch>
   <arg name="vehicle_id" default="default"/>
   <let name="sensor_model" value="sample_sensor_kit"/>
-  <arg name="camera_name" default="zedxm"/>
+  <arg name="camera_name" default="lucid"/>
   <arg name="rviz" default="false"/>
-  <arg name="use_concatenated_pointcloud" default="false"/>
+  <arg name="use_concatenated_pointcloud" default="true"/>
 
   <group>
     <push-ros-namespace namespace="sensor_kit"/>
