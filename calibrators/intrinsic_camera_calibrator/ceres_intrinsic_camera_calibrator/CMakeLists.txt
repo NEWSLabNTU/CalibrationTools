@@ -23,7 +23,7 @@ ament_auto_add_library(${PROJECT_NAME} SHARED
 
 target_link_libraries(${PROJECT_NAME}
   ${OpenCV_LIBS}
-  ${CERES_LIBRARIES}
+  Ceres::ceres
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -44,19 +44,23 @@ ament_auto_add_executable(${PROJECT_NAME}_test
 
 target_link_libraries(${PROJECT_NAME}_test
   ${OpenCV_LIBS}
-  ${CERES_LIBRARIES}
   ${PROJECT_NAME}
 )
 
 ament_python_install_package(${PROJECT_NAME})
 
-pybind11_add_module(${PROJECT_NAME}_py src/ceres_intrinsic_camera_calibrator_py.cpp)
+pybind11_add_module(${PROJECT_NAME}_py MODULE src/ceres_intrinsic_camera_calibrator_py.cpp)
 
 target_include_directories(${PROJECT_NAME}_py PRIVATE include ${OpenCV_INCLUDE_DIRS})
 
+# Add compile definitions to avoid glog flag conflicts
+target_compile_definitions(${PROJECT_NAME}_py PRIVATE
+  GLOG_NO_ABBREVIATED_SEVERITIES
+  GOOGLE_GLOG_DLL_DECL=
+)
+
 target_link_libraries(${PROJECT_NAME}_py PRIVATE
   ${OpenCV_LIBS}
-  ${CERES_LIBRARIES}
   ${PROJECT_NAME}
 )
 
