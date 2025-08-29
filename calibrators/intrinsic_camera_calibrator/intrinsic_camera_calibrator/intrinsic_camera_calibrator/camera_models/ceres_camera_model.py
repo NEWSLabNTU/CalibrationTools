@@ -18,10 +18,12 @@ import os
 from typing import List
 from typing import Optional
 
-from ceres_intrinsic_camera_calibrator.ceres_intrinsic_camera_calibrator_py import calibrate
 from intrinsic_camera_calibrator.camera_models.camera_model import CameraModel
 from intrinsic_camera_calibrator.camera_models.opencv_camera_model import OpenCVCameraModel
 import numpy as np
+
+# Lazy import to avoid glog initialization conflicts
+calibrate = None
 
 
 class CeresCameraModel(CameraModel):
@@ -84,6 +86,11 @@ class CeresCameraModel(CameraModel):
         self, object_points_list: List[np.array], image_points_list: List[np.array]
     ):
         """Calibrate Ceres camera model."""
+        # Lazy load the calibrate function to avoid glog conflicts at import time
+        global calibrate
+        if calibrate is None:
+            from ceres_intrinsic_camera_calibrator.ceres_intrinsic_camera_calibrator_py import calibrate
+
         camera_model = self.init_calibrate(object_points_list, image_points_list)
 
         _, camera_matrix, dist_coeffs, _, _ = calibrate(
